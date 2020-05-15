@@ -36,6 +36,7 @@ Component({
     voiceStatus: false, //录音框显示状态
     voiceIng:false,//是否录音中
     addStatus:false,//附件框显示状态
+    ps:false,//摄像头状态
   },
 
   ready: function (options) {
@@ -186,7 +187,18 @@ Component({
     //拍摄点击
     psClick:function(){
       console.log(111)
-      mediaRecordert.start();
+      this.setData({
+        ps:true
+      })
+      // const ctx = wx.createCameraContext()
+      // ctx.startRecord({
+      //   timeoutCallback:function(res){
+      //     console.log(res)
+      //   },
+      //   success: (res) => {
+      //     console.log(res)
+      //   }
+      // })
     },
   }
 })
