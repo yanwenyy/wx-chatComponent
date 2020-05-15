@@ -1,0 +1,248 @@
+/* components/chatRoom/chatRoom.wxss */
+.inline-block {
+  display: inline-block;
+}
+.box-sizing {
+  box-sizing: border-box
+}
+.chat-show{
+  width: 100%;
+  height: 90vh;
+  padding: 30rpx;
+  overflow: auto;
+  position: fixed;
+  top:0;
+  left:0;
+}
+::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+  color: transparent;
+  }
+.chat-input{
+  position: fixed;
+  width: 100%;
+  bottom:0;
+  left:0;
+  padding:10rpx;
+  background: #eee;
+}
+.foot-input{
+  display: flex;
+  justify-content: space-between;
+}
+.msg-input{
+  width: 60%;
+  height: 88rpx;
+  border: 1rpx solid #eee;
+  border-radius: 8rpx;
+  background: #fff;
+  padding-left: 10rpx;
+  font-size: 35rpx;
+}
+.voice-view{
+  width: 60%;
+  height: 88rpx;
+  border: 1rpx solid #eee;
+  border-radius: 8rpx;
+  background: #fff;
+  padding-left: 10rpx;
+  font-size: 35rpx;
+  text-align: center;
+  line-height: 88rpx;
+}
+.input-btn{
+  height: 88rpx!important;
+  line-height: 88rpx!important;
+}
+.input-enclosure{
+  width: 100%;
+  height: auto;
+  background: #fff;
+  padding:20rpx;
+  margin-top:10rpx;
+}
+.input-enclosure-list{
+  width: 12%;
+  height: 100rpx;
+  margin-right: 14%;
+  text-align: center;
+  font-size: 30rpx;
+}
+.input-enclosure-list>image{
+  width: 100%;
+}
+.list-left{
+  text-align: left;
+}
+.list-right{
+  text-align: right;
+}
+.chat-user-img{
+  width: 100rpx;
+  height: 100rpx;
+  vertical-align: top;
+  border-radius: 50%;
+  background: #eee;
+}
+.chat-msg{
+  width: auto;
+  max-width: 80%;
+  height: auto;
+  background: #54DC56;
+  font-size: 35rpx;
+  line-height: 50rpx;
+  padding:10rpx;
+  vertical-align: top;
+  margin-right: 20rpx;
+  position: relative;
+  margin-bottom: 50rpx;
+  min-height: 100rpx;
+  text-align: left;
+  border-radius: 10rpx;
+}
+.chat-msg-voice{
+  min-width:100rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.chat-msg-voice>text{
+  vertical-align: top;
+}
+.yy-img{
+  width: 40rpx;
+  height: 40rpx;
+  margin-top: 20rpx;
+}
+.yy-img>image{
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+.chat-msg-left{
+  width: auto;
+  max-width: 80%;
+  height: auto;
+  background: #54DC56;
+  font-size: 35rpx;
+  line-height: 50rpx;
+  padding:10rpx;
+  vertical-align: top;
+  margin-left: 20rpx;
+  position: relative;
+  margin-bottom: 50rpx;
+  min-height: 100rpx;
+  text-align: left;
+  border-radius: 10rpx;
+}
+.list-trange{
+    width: 0;
+    height: 0;
+    border-top: 10rpx solid transparent;
+    border-left: 10rpx solid #54DC56;
+    border-bottom: 10rpx solid transparent;
+    position: absolute;
+    top:40rpx;
+    right: -10rpx;
+}
+.list-trange-left{
+  width: 0;
+  height: 0;
+  border-top: 10rpx solid transparent;
+  border-right: 10rpx solid #54DC56;
+  border-bottom: 10rpx solid transparent;
+  position: absolute;
+  top:40rpx;
+  left: -10rpx;
+}
+.voice-img{
+  width: 60rpx;
+  height: 60rpx;
+  vertical-align: middle;
+  margin:20rpx 10rpx 0 0;
+}
+/* 语音播放动效 */
+.yy-bf {
+  animation: yybf 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  animation-fill-mode: forwards;
+}
+@keyframes yybf {
+  0% {
+    width: 13rpx;
+  }
+
+  50%{
+    width: 26rpx;
+  }
+  100% {
+    width: 40rpx;
+  }
+}
+
+/*  */
+.record, .dot {
+  height: 200rpx;
+  width: 200rpx;
+  border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-iteration-count: 1;
+}
+
+.record {
+  background: rgba(92, 212, 76);
+  z-index: 10;
+}
+
+.dot {
+  background: rgba(92, 212, 76, 0.7);
+  z-index: 9;
+}
+
+.dot-blowup {
+  animation: sploosh2 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  animation-fill-mode: forwards;
+}
+
+.dot-zoomout {
+  animation: sploosh3 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes sploosh2 {
+  0% {
+    box-shadow: 0 0 0 0px rgba(92, 212, 76, 0.7);
+    background: rgba(92, 212, 76, 0.7);
+  }
+
+  100% {
+    box-shadow: 0 0 0 15px rgba(92, 212, 76, 0.3);
+    background: rgba(92, 212, 76, 0.3);
+  }
+}
+
+@keyframes sploosh3 {
+  0% {
+     box-shadow: 0 0 0 15px rgba(92, 212, 76, 0.3);
+    background: rgba(92, 212, 76, 0.3);
+  }
+
+  100%{
+    box-shadow: 0 0 0 0px rgba(92, 212, 76, 0.7);
+    background: rgba(92, 212, 76, 0.7);
+  }
+}
+
+.record image {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  background: transparent;
+  transform: translate(-50%, -50%);
+}
+/*  */
