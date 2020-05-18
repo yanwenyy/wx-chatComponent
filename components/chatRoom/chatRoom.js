@@ -44,6 +44,7 @@ Component({
     psVideo:false,
     psVideoUrl:'',//拍摄的视频预览
     psVideoImg:'',//拍摄的视频封面
+    fullPlay:false,//是否全屏播放
   },
 
   ready: function (options) {
@@ -262,38 +263,52 @@ Component({
             psVideoImg:res.tempThumbPath,
             ps:false
           })
+          
         },
         fail: (res) => {
           console.log(res)
         }
       })
+    },
+
+    //视频预览返回按钮点击
+    videoPreBack: function () {
+      this.setData({
+        psVideo: false,
+        psVideoUrl: '',
+        psVideoImg: '',
+        ps: true
+      })
+    },
+
+    //视频预览完成按钮点击
+    videoPreSub: function () {
+      var that=this;
+      var v = {
+        videoUrl: this.data.psVideoUrl,
+        videoImg:this.data.psVideoImg,
+        type: 'video'
+      };
+      console.log(v.videoImg)
+      that.data.list.push(v);
+      that.setData({
+        list: that.data.list,
+        psVideo: false,
+        psVideoUrl: '',
+        psVideoImg: '',
+        ps: false,
+        scrollTop: that.data.list.length * 1000,
+      })
+    },
+
+    //视频全屏播放
+    fullPlay:function(e){
+      this.setData({
+        fullPlay:true,
+        psVideoUrl:e.currentTarget.dataset.url
+      })
     }
-  },
 
-  //视频预览返回按钮点击
-  videoPreBack:function(){
-    this.setData({
-      psVideo:false,
-      psVideoUrl:'',
-      psVideoImg:'',
-      ps:true
-    })
-  },
 
-  //视频预览完成按钮点击
-  videoPreSub:function(){
-    var v = {
-      videoMsg: res.tempFilePath,
-      type:'video'
-    };
-    that.data.list.push(v);
-    that.setData({
-      list: that.data.list,
-      psVideo:false,
-      psVideoUrl:'',
-      psVideoImg:'',
-      ps:false,
-      scrollTop: that.data.list.length * 1000,
-    })
   }
 })

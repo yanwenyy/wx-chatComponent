@@ -1,80 +1,87 @@
 <!--components/chatRoom/chatRoom.wxml-->
 <view class="chat-body">
-	<view class="chat-head"></view>
-	<scroll-view class="chat-show box-sizing" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true" style="height:{{windowHeight-inputHeight-20}}px">
-		<view class="chat-list box-sizing" wx:for="{{list}}" wx:key="index">
-			<view class="list-right" wx:if="{{index%2==0}}">
-				<view class="inline-block chat-msg box-sizing">
-					<view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
-					<view wx:if="{{item.type=='audio'}}" style="width:{{item.duration/100}}px" class="chat-msg-voice list-right" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick" data-index="{{index}}">
-						<text class="inline-block">{{item.aboutTime}}"</text>
-						<view class="yy-img inline-block">
-							<image class="{{item.start?'yy-bf':''}}" src="../img/yy-left.png" mode="aspectFit"></image>
-						</view>
-					</view>
-					<view class="inline-block list-trange"></view>
-				</view>
-				<image class="chat-user-img" src="" mode="aspectFit"></image>
-			</view>
-			<view class="list-left" wx:if="{{index%2!=0}}">
-				<image class="chat-user-img" src="" mode="aspectFit"></image>
-				<view class="inline-block chat-msg-left box-sizing">
-					<view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
-					<view wx:if="{{item.type=='audio'}}" class="chat-msg-voice" style="width:{{item.duration/100}}px" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick">
-						<view class="yy-img inline-block">
-							<image class="{{item.start?'yy-bf':''}}" src="../img/yy-right.png" mode="aspectFit"></image>
-						</view>
-						<text class="inline-block">{{item.aboutTime}}"</text>
-					</view>
-					<view class="inline-block list-trange-left"></view>
-				</view>
-			</view>
-		</view>
-	</scroll-view>
-	<view class="chat-input box-sizing" style="bottom:{{inputHeight}}px">
-		<view class="foot-input">
-			<image bindtap="voiceClick" class="voice-img" src="../img/{{voiceStatus?'key':'voice'}}.png" mode="aspectFit"></image>
-			<view wx:if="{{voiceStatus}}" bindtouchstart="record" bindtouchend="recordEnd" class="inline-block voice-view">按住说话</view>
-			<input wx:if="{{!voiceStatus}}" type='text' bindinput="input" hold-keyboard="true" value="{{inputMsg}}" class="inline-block msg-input" adjust-position="{{inputUp}}" bindfocus="inputFocus" bindblur="inputBlur"></input>
-			<button size="mini" type="primary" class="inline-block input-btn" bindtap="sendMsg">发送</button>
-			<image bindtap="addClick" class="voice-img" src="../img/add.png" mode="aspectFit"></image>
-		</view>
-		<view class="input-enclosure box-sizing" hidden="{{!addStatus}}">
-			<view class="inline-block input-enclosure-list" bindtap="xcClick">
-				<image src="../img/enclosure-xc.png" mode="widthFix"></image>
-				<view>相册</view>
-			</view>
-			<view class="inline-block input-enclosure-list" bindtap="psClick">
-				<image src="../img/enclosure-ps.png" mode="widthFix"></image>
+  <view class="chat-head"></view>
+  <scroll-view class="chat-show box-sizing" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true" style="height:{{windowHeight-inputHeight-20}}px">
+    <view class="chat-list box-sizing" wx:for="{{list}}" wx:key="index">
+      <view class="list-right" wx:if="{{index%2==0}}">
+        <view class="inline-block chat-msg box-sizing {{item.type!='video'?'green':''}}">
+          <view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
+          <view wx:if="{{item.type=='audio'}}" style="width:{{item.duration/100}}px" class="chat-msg-voice list-right" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick" data-index="{{index}}">
+            <text class="inline-block">{{item.aboutTime}}"</text>
+            <view class="yy-img inline-block">
+              <image class="{{item.start?'yy-bf':''}}" src="../img/yy-left.png" mode="aspectFit"></image>
+            </view>
+          </view>
+          <view wx:if="{{item.type=='video'}}" class="list-video">
+            <image src="{{item.videoImg}}" data-url="{{item.videoUrl}}" mode="aspectFit" controls="{{false}}" bindtap="fullPlay"></image>
+          </view>
+          <view wx:if="{{item.type!='video'}}" class="inline-block list-trange"></view>
+        </view>
 
-				<view>拍摄</view>
-			</view>
-			<view class="inline-block input-enclosure-list">
-				<image src="../img/enclosure-wj.png" mode="widthFix"></image>
-				<view>文件</view>
-			</view>
-		</view>
-	</view>
-	<view class="record" wx:if="{{voiceIng}}">
-		<view class="dot dot-blowup"></view>
-		<image mode="widthFix" src="../img/voice-ing.png"></image>
-	</view>
-	<camera device-position="back" flash="off" class="ps" hidden="{{!ps}}">
-		<view class="ps-btn-view">
-			<view class="circleProgress_wrapper" bindtouchstart="psStart" bindtouchend="psEnd">
-				<view class="wrapper right">
-					<view class="circleProgress rightcircle {{psBtn?'rightcircle_animation':''}}"></view>
-				</view>
-				<view class="wrapper left">
-					<view class="circleProgress leftcircle {{psBtn?'leftcircle_animation':''}}"></view>
-				</view>
-				<image src="../img/voice-ing.png" class="start-ps"></image>
-			</view>
-		</view>
-	</camera>
-	<view class="video-pre" wx:if="{{psVideo}}">
-		<button class="video-pre-back" bindtap="videoPreBack">返回</button>
-		<video controls="{{false}}" src="{{psVideoUrl}}"></video>
-		<button class="video-pre-sub" type="primary" bindtap="videoPreSub">完成</button>
-	</view>
+        <image class="chat-user-img" src="" mode="aspectFit"></image>
+      </view>
+      <view class="list-left" wx:if="{{index%2!=0}}">
+        <image class="chat-user-img" src="" mode="aspectFit"></image>
+        <view class="inline-block chat-msg-left box-sizing">
+          <view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
+          <view wx:if="{{item.type=='audio'}}" class="chat-msg-voice" style="width:{{item.duration/100}}px" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick">
+            <view class="yy-img inline-block">
+              <image class="{{item.start?'yy-bf':''}}" src="../img/yy-right.png" mode="aspectFit"></image>
+            </view>
+            <text class="inline-block">{{item.aboutTime}}"</text>
+          </view>
+          <view class="inline-block list-trange-left"></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="chat-input box-sizing" style="bottom:{{inputHeight}}px">
+    <view class="foot-input">
+      <image bindtap="voiceClick" class="voice-img" src="../img/{{voiceStatus?'key':'voice'}}.png" mode="aspectFit"></image>
+      <view wx:if="{{voiceStatus}}" bindtouchstart="record" bindtouchend="recordEnd" class="inline-block voice-view">按住说话</view>
+      <input wx:if="{{!voiceStatus}}" type='text' bindinput="input" hold-keyboard="true" value="{{inputMsg}}" class="inline-block msg-input" adjust-position="{{inputUp}}" bindfocus="inputFocus" bindblur="inputBlur"></input>
+      <button size="mini" type="primary" class="inline-block input-btn" bindtap="sendMsg">发送</button>
+      <image bindtap="addClick" class="voice-img" src="../img/add.png" mode="aspectFit"></image>
+    </view>
+    <view class="input-enclosure box-sizing" hidden="{{!addStatus}}">
+      <view class="inline-block input-enclosure-list" bindtap="xcClick">
+        <image src="../img/enclosure-xc.png" mode="widthFix"></image>
+        <view>相册</view>
+      </view>
+      <view class="inline-block input-enclosure-list" bindtap="psClick">
+        <image src="../img/enclosure-ps.png" mode="widthFix"></image>
+
+        <view>拍摄</view>
+      </view>
+      <view class="inline-block input-enclosure-list">
+        <image src="../img/enclosure-wj.png" mode="widthFix"></image>
+        <view>文件</view>
+      </view>
+    </view>
+  </view>
+  <view class="record" wx:if="{{voiceIng}}">
+    <view class="dot dot-blowup"></view>
+    <image mode="widthFix" src="../img/voice-ing.png"></image>
+  </view>
+  <camera device-position="back" flash="off" class="ps" hidden="{{!ps}}">
+    <view class="ps-btn-view">
+      <view class="circleProgress_wrapper" bindtouchstart="psStart" bindtouchend="psEnd">
+        <view class="wrapper right">
+          <view class="circleProgress rightcircle {{psBtn?'rightcircle_animation':''}}"></view>
+        </view>
+        <view class="wrapper left">
+          <view class="circleProgress leftcircle {{psBtn?'leftcircle_animation':''}}"></view>
+        </view>
+        <image src="../img/voice-ing.png" class="start-ps"></image>
+      </view>
+    </view>
+  </camera>
+  <view class="video-pre" wx:if="{{psVideo}}">
+    <button class="video-pre-back" bindtap="videoPreBack">返回</button>
+    <video controls="{{false}}" src="{{psVideoUrl}}"></video>
+    <button class="video-pre-sub" type="primary" bindtap="videoPreSub">完成</button>
+  </view>
+  <view class="video-pre" wx:if="{{fullPlay}}">
+    <video src="{{psVideoUrl}}"></video>
+  </view>
 </view>
