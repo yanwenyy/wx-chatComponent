@@ -1,6 +1,7 @@
 // components/chatRoom/chatRoom.js
-const myaudio=wx.createInnerAudioContext();
-const recorderManager=wx.getRecorderManager();
+const myaudio = wx.createInnerAudioContext();
+const recorderManager = wx.getRecorderManager();
+
 Component({
   /**
    * 组件的属性列表
@@ -34,9 +35,15 @@ Component({
     windowHeight: '',
     inputHeight: '',
     voiceStatus: false, //录音框显示状态
-    voiceIng:false,//是否录音中
-    addStatus:false,//附件框显示状态
-    ps:false,//摄像头状态
+    voiceIng: false, //是否录音中
+    addStatus: false, //附件框显示状态
+    ps: false, //摄像头状态
+    psBtn: false,
+    psTimer: null,
+    psCount: 1,
+    psVideo:false,
+    psVideoUrl:'',//拍摄的视频预览
+    psVideoImg:'',//拍摄的视频封面
   },
 
   ready: function (options) {
@@ -62,7 +69,8 @@ Component({
       // let  scrollHeight = wx.getSystemInfoSync().windowHeight;
       if (this.data.inputMsg != '') {
         var v = {
-          content: this.data.inputMsg
+          content: this.data.inputMsg,
+          type:'msg'
         }
         this.data.list.push(v);
         this.setData({
@@ -82,7 +90,7 @@ Component({
         inputHeight = e.detail.height;
         this.setData({
           inputHeight: inputHeight,
-          addStatus:false
+          addStatus: false
         })
       }
     },
@@ -117,12 +125,12 @@ Component({
       var that = this;
 
       recorderManager.start({
-        audioSource:"auto",
-        format:"mp3"
+        audioSource: "auto",
+        format: "mp3"
       });
-      recorderManager.onStart(function(){
+      recorderManager.onStart(function () {
         that.setData({
-          voiceIng:true
+          voiceIng: true
         })
       })
     },
@@ -133,12 +141,13 @@ Component({
       recorderManager.stop();
       recorderManager.onStop(function (res) {
         that.setData({
-          voiceIng:false
+          voiceIng: false
         })
         var v = {
           voiceMsg: res.tempFilePath,
-          duration:res.duration,
-          aboutTime:Math.round(res.duration/1000)
+          duration: res.duration,
+          aboutTime: Math.round(res.duration / 1000),
+          type:'audio'
         };
         that.data.list.push(v);
         that.setData({
@@ -151,33 +160,33 @@ Component({
     //列表内容点击
     msgLick: function (e) {
       // console.log(e);
-      var that=this;
-      var target=e.currentTarget.dataset;
+      var that = this;
+      var target = e.currentTarget.dataset;
       if (target.voicemsg) {
-        myaudio.src=target.voicemsg;
+        myaudio.src = target.voicemsg;
         myaudio.play();
-        myaudio.onPlay(function(){
-          that.data.list[target.index].start=true;
+        myaudio.onPlay(function () {
+          that.data.list[target.index].start = true;
           that.setData({
-            list:that.data.list
+            list: that.data.list
           })
         });
-        myaudio.onEnded(function(){
-          that.data.list[target.index].start=false;
+        myaudio.onEnded(function () {
+          that.data.list[target.index].start = false;
           that.setData({
-            list:that.data.list
+            list: that.data.list
           })
         })
       }
     },
 
     //相册点击
-    xcClick:function(){
+    xcClick: function () {
       wx.chooseImage({
         count: 1,
         sizeType: ['original', 'compressed'],
         sourceType: ['album', 'camera'],
-        success (res) {
+        success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
           const tempFilePaths = res.tempFilePaths
         }
@@ -185,10 +194,10 @@ Component({
     },
 
     //拍摄点击
-    psClick:function(){
-      console.log(111)
+    psClick: function () {
+     
       this.setData({
-        ps:true
+        ps: true
       })
       // const ctx = wx.createCameraContext()
       // ctx.startRecord({
@@ -200,5 +209,91 @@ Component({
       //   }
       // })
     },
+
+    //开始拍摄
+    psStart: function () {
+      var that = this;
+      this.setData({
+        psBtn: true
+      });
+      const camera = wx.createCameraContext();
+      camera.startRecord({
+        timeoutCallback: function (res) {
+          that.setData({
+            psVideo:true,
+            psVideoUrl:res.tempVideoPath,
+            psVideoImg:res.tempThumbPath,
+            ps:false
+          })
+        },
+        success: (res) => {
+          console.log(res)
+        },
+        fail: (res) => {
+          console.log(res)
+        }
+      })
+      this.data.psTimer = setInterval(function () {
+        that.data.psCount++;
+        console.log(that.data.psCount)
+        if (that.data.psCount == 30) {
+          that.data.psCount = 1;
+          clearInterval(that.data.psTimer)
+          that.data.psTimer = null;
+        }
+      }, 1000);
+    },
+
+    //停止拍摄
+    psEnd: function () {
+      var that=this;
+      this.setData({
+        psBtn: false
+      });
+      const camera = wx.createCameraContext();
+      this.data.psCount = 1;
+      clearInterval(this.data.psTimer)
+      this.data.psTimer = null;
+      camera.stopRecord({
+        success: (res) => {
+          that.setData({
+            psVideo:true,
+            psVideoUrl:res.tempVideoPath,
+            psVideoImg:res.tempThumbPath,
+            ps:false
+          })
+        },
+        fail: (res) => {
+          console.log(res)
+        }
+      })
+    }
+  },
+
+  //视频预览返回按钮点击
+  videoPreBack:function(){
+    this.setData({
+      psVideo:false,
+      psVideoUrl:'',
+      psVideoImg:'',
+      ps:true
+    })
+  },
+
+  //视频预览完成按钮点击
+  videoPreSub:function(){
+    var v = {
+      videoMsg: res.tempFilePath,
+      type:'video'
+    };
+    that.data.list.push(v);
+    that.setData({
+      list: that.data.list,
+      psVideo:false,
+      psVideoUrl:'',
+      psVideoImg:'',
+      ps:false,
+      scrollTop: that.data.list.length * 1000,
+    })
   }
 })

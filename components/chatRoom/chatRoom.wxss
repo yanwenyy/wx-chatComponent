@@ -285,21 +285,28 @@
 /*  */
 
 /* 拍照樣式 */
-
+.ps-btn-view{
+  text-align: center;
+  position: absolute;
+  left: 0;
+  bottom:0;
+  width: 100%;
+}
 .circleProgress_wrapper {
   width: 200rpx;
   height: 200rpx;
   bottom: 50rpx;
-  position: absolute;
-  margin: 0 auto;
+  position: relative;
+  margin:auto;
 }
 
 .wrapper {
-  width: 100rpx;
+  width: 50%;
   height: 200rpx;
   position: absolute;
   top: 0;
   overflow: hidden;
+  margin:0;
 }
 
 .right {
@@ -313,7 +320,7 @@
 .circleProgress {
   width: 160rpx;
   height: 160rpx;
-  border: 20rpx solid rgb(232, 232, 12);
+  border: 20rpx solid #eee;
   border-radius: 50%;
   position: absolute;
   top: 0;
@@ -321,61 +328,51 @@
 }
 
 .rightcircle {
-  border-top: 20rpx solid green;
-  border-right: 20rpx solid green;
+  border-top: 20rpx solid #eee;
+  border-right: 20rpx solid #eee;
+  border-bottom: 20rpx solid green;
+  border-left: 20rpx solid green;
   right: 0;
+}
+.rightcircle_animation{
   -webkit-animation: circleProgressLoad_right 30s linear;
 }
 
 .leftcircle {
-  border-bottom: 20rpx solid green;
-  border-left: 20rpx solid green;
+  border-bottom: 20rpx solid #eee;
+  border-left: 20rpx solid #eee;
+  border-top: 20rpx solid green;
+  border-right: 20rpx solid green;
   left: 0;
+  
+}
+.leftcircle_animation{
   -webkit-animation: circleProgressLoad_left 30s linear;
 }
-
 @-webkit-keyframes circleProgressLoad_right {
   0% {
-    border-top: 20rpx solid #ed1a1a;
-    border-right: 20rpx solid #ed1a1a;
     -webkit-transform: rotate(45deg);
   }
 
   50% {
-    border-top: 20rpx solid rgb(232, 232, 12);
-    border-right: 20rpx solid rgb(232, 232, 12);
-    border-left: 20rpx solid rgb(81, 197, 81);
-    border-bottom: 20rpx solid rgb(81, 197, 81);
     -webkit-transform: rotate(225deg);
   }
 
   100% {
-    border-left: 20rpx solid green;
-    border-bottom: 20rpx solid green;
     -webkit-transform: rotate(225deg);
   }
 }
 
 @-webkit-keyframes circleProgressLoad_left {
   0% {
-    border-bottom: 20rpx solid #ed1a1a;
-    border-left: 20rpx solid #ed1a1a;
     -webkit-transform: rotate(45deg);
   }
 
   50% {
-    border-bottom: 20rpx solid rgb(232, 232, 12);
-    border-left: 20rpx solid rgb(232, 232, 12);
-    border-top: 20rpx solid rgb(81, 197, 81);
-    border-right: 20rpx solid rgb(81, 197, 81);
     -webkit-transform: rotate(45deg);
   }
 
   100% {
-    border-top: 20rpx solid green;
-    border-right: 20rpx solid green;
-    border-bottom: 20rpx solid green;
-    border-left: 20rpx solid green;
     -webkit-transform: rotate(225deg);
   }
 }
@@ -387,3 +384,34 @@
   left:15%;
 }
 /*  */
+.video-pre{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+}
+.video-pre>video{
+  width: 100%;
+  height: 100%;
+}
+.video-pre-sub{
+  width: 100rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  position: absolute;
+  bottom:30rpx;
+  right:30rpx;
+  padding:0;
+}
+.video-pre-back{
+  width: 100rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  position: absolute;
+  top:30rpx;
+  left:30rpx;
+  padding:0;
+  background: #eee;
+  z-index: 99;
+}
