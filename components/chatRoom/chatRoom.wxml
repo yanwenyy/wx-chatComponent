@@ -4,7 +4,7 @@
   <scroll-view class="chat-show box-sizing" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true" style="height:{{windowHeight-inputHeight-20}}px">
     <view class="chat-list box-sizing" wx:for="{{list}}" wx:key="index">
       <view class="list-right" wx:if="{{index%2==0}}">
-        <view class="inline-block chat-msg box-sizing {{item.type!='video'?'green':''}}">
+        <view class="inline-block chat-msg box-sizing {{item.type!='video'&&item.type!='img'?'green':''}}">
           <view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
           <view wx:if="{{item.type=='audio'}}" style="width:{{item.duration/100}}px" class="chat-msg-voice list-right" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick" data-index="{{index}}">
             <text class="inline-block">{{item.aboutTime}}"</text>
@@ -15,14 +15,17 @@
           <view wx:if="{{item.type=='video'}}" class="list-video">
             <image src="{{item.videoImg}}" data-url="{{item.videoUrl}}" mode="aspectFit" controls="{{false}}" bindtap="fullPlay"></image>
           </view>
-          <view wx:if="{{item.type!='video'}}" class="inline-block list-trange"></view>
+          <view wx:if="{{item.type=='img'}}" class="list-img">
+            <image src="{{item.imgUrl}}" mode="widthFix"></image>
+          </view>
+          <view wx:if="{{item.type!='video'&&item.type!='img'}}" class="inline-block list-trange"></view>
         </view>
 
         <image class="chat-user-img" src="" mode="aspectFit"></image>
       </view>
       <view class="list-left" wx:if="{{index%2!=0}}">
         <image class="chat-user-img" src="" mode="aspectFit"></image>
-        <view class="inline-block chat-msg-left box-sizing">
+        <view class="inline-block chat-msg-left box-sizing {{item.type!='video'&&item.type!='img'?'green':''}}">
           <view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
           <view wx:if="{{item.type=='audio'}}" class="chat-msg-voice" style="width:{{item.duration/100}}px" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick">
             <view class="yy-img inline-block">
@@ -30,7 +33,10 @@
             </view>
             <text class="inline-block">{{item.aboutTime}}"</text>
           </view>
-          <view class="inline-block list-trange-left"></view>
+          <view wx:if="{{item.type=='img'}}" class="list-img">
+            <image src="{{item.imgUrl}}" mode="widthFix"></image>
+          </view>
+          <view wx:if="{{item.type!='video'&&item.type!='img'}}" class="inline-block list-trange-left"></view>
         </view>
       </view>
     </view>

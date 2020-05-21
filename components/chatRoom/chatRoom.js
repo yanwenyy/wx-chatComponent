@@ -183,13 +183,24 @@ Component({
 
     //相册点击
     xcClick: function () {
+      var that=this;
       wx.chooseImage({
         count: 1,
         sizeType: ['original', 'compressed'],
         sourceType: ['album', 'camera'],
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
-          const tempFilePaths = res.tempFilePaths
+          const tempFilePaths = res.tempFilePaths;
+          var v = {
+            imgUrl: tempFilePaths,
+            type:'img'
+          }
+          that.data.list.push(v);
+          that.setData({
+            inputMsg: '',
+            list: that.data.list,
+            scrollTop: that.data.list.length * 1000
+          })
         }
       })
     },
