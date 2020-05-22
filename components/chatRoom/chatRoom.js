@@ -76,9 +76,9 @@ Component({
         this.data.list.push(v);
         this.setData({
           inputMsg: '',
-          list: this.data.list,
-          scrollTop: this.data.list.length * 1000
+          list: this.data.list
         })
+       
       } else {
 
       }
@@ -152,8 +152,7 @@ Component({
         };
         that.data.list.push(v);
         that.setData({
-          list: that.data.list,
-          scrollTop: that.data.list.length * 1000,
+          list: that.data.list
         })
       });
     },
@@ -191,6 +190,7 @@ Component({
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
           const tempFilePaths = res.tempFilePaths;
+          // console.log(res)
           var v = {
             imgUrl: tempFilePaths,
             type:'img'
@@ -199,7 +199,8 @@ Component({
           that.setData({
             inputMsg: '',
             list: that.data.list,
-            scrollTop: that.data.list.length * 1000
+            addStatus: !that.data.addStatus,
+            inputHeight: 0
           })
         }
       })
@@ -307,8 +308,7 @@ Component({
         psVideo: false,
         psVideoUrl: '',
         psVideoImg: '',
-        ps: false,
-        scrollTop: that.data.list.length * 1000,
+        ps: false
       })
     },
 
@@ -318,8 +318,30 @@ Component({
         fullPlay:true,
         psVideoUrl:e.currentTarget.dataset.url
       })
+    },
+
+    //图片点击预览
+    preImg:function(e){
+      console.log(e.currentTarget.dataset.url)
+      wx.previewImage({
+        urls: e.currentTarget.dataset.url, // 当前显示图片的http链接
+      })
     }
 
+  },
 
-  }
+  observers: {
+    'list': function(list) {
+      var that=this;
+      this.createSelectorQuery().selectAll('.chat-list').boundingClientRect(function(rect) {
+        that.setData({
+          scrollTop: rect.length>0?that.data.scrollTop+(rect[rect.length-1].height*4):list.length * 3000,
+          // padding:list[list.length-1].type=='img'?250:30
+        })
+      }).exec();
+      // that.setData({
+      //   scrollTop: list.length * 3000
+      // })
+    }
+  },
 })

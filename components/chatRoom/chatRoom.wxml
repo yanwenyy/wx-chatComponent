@@ -1,7 +1,7 @@
 <!--components/chatRoom/chatRoom.wxml-->
 <view class="chat-body">
   <view class="chat-head"></view>
-  <scroll-view class="chat-show box-sizing" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true" style="height:{{windowHeight-inputHeight-20}}px">
+  <scroll-view class="chat-show box-sizing" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true"  style="height:{{windowHeight-inputHeight-20}}px">
     <view class="chat-list box-sizing" wx:for="{{list}}" wx:key="index">
       <view class="list-right" wx:if="{{index%2==0}}">
         <view class="inline-block chat-msg box-sizing {{item.type!='video'&&item.type!='img'?'green':''}}">
@@ -16,7 +16,7 @@
             <image src="{{item.videoImg}}" data-url="{{item.videoUrl}}" mode="aspectFit" controls="{{false}}" bindtap="fullPlay"></image>
           </view>
           <view wx:if="{{item.type=='img'}}" class="list-img">
-            <image src="{{item.imgUrl}}" mode="widthFix"></image>
+            <image src="{{item.imgUrl}}" mode="widthFix" bindtap="preImg" data-url="{{item.imgUrl}}"></image>
           </view>
           <view wx:if="{{item.type!='video'&&item.type!='img'}}" class="inline-block list-trange"></view>
         </view>
@@ -34,7 +34,7 @@
             <text class="inline-block">{{item.aboutTime}}"</text>
           </view>
           <view wx:if="{{item.type=='img'}}" class="list-img">
-            <image src="{{item.imgUrl}}" mode="widthFix"></image>
+            <image src="{{item.imgUrl}}" mode="widthFix" bindtap="preImg" data-url="{{item.imgUrl}}"></image>
           </view>
           <view wx:if="{{item.type!='video'&&item.type!='img'}}" class="inline-block list-trange-left"></view>
         </view>
@@ -45,7 +45,7 @@
     <view class="foot-input">
       <image bindtap="voiceClick" class="voice-img" src="../img/{{voiceStatus?'key':'voice'}}.png" mode="aspectFit"></image>
       <view wx:if="{{voiceStatus}}" bindtouchstart="record" bindtouchend="recordEnd" class="inline-block voice-view">按住说话</view>
-      <input wx:if="{{!voiceStatus}}" type='text' bindinput="input" hold-keyboard="true" value="{{inputMsg}}" class="inline-block msg-input" adjust-position="{{inputUp}}" bindfocus="inputFocus" bindblur="inputBlur"></input>
+      <input maxlength="1500" wx:if="{{!voiceStatus}}" type='text' bindinput="input" hold-keyboard="true" value="{{inputMsg}}" class="inline-block msg-input" adjust-position="{{inputUp}}" bindfocus="inputFocus" bindblur="inputBlur"></input>
       <button size="mini" type="primary" class="inline-block input-btn" bindtap="sendMsg">发送</button>
       <image bindtap="addClick" class="voice-img" src="../img/add.png" mode="aspectFit"></image>
     </view>

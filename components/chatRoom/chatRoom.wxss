@@ -125,6 +125,7 @@
   min-height: 100rpx;
   text-align: left;
   border-radius: 10rpx;
+  word-break: break-all;
 }
 
 .chat-msg-voice {
