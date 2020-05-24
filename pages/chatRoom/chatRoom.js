@@ -62,5 +62,10 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  onMyEvent: function (e) {
+    e.detail // 自定义组件触发事件时提供的detail对象
   }
+
 })

@@ -1,10 +1,13 @@
 <!--components/chatRoom/chatRoom.wxml-->
 <view class="chat-body">
-  <view class="chat-head"></view>
-  <scroll-view class="chat-show box-sizing" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true"  style="height:{{windowHeight-inputHeight-20}}px">
+  <view class="chat-head" style="margin-top:{{statusBarHeight}}px">
+    <image src="../img/back.png" mode="aspectFit" bindtap="back"></image>
+    {{navTitle}}
+  </view>
+  <scroll-view class="chat-show box-sizing {{bgColor}}" scroll-y="true" scroll-top='{{scrollTop}}' scroll-with-animation="true"  style="height:{{windowHeight-inputHeight-20}}px;top:{{statusBarHeight*2+100}}rpx">
     <view class="chat-list box-sizing" wx:for="{{list}}" wx:key="index">
       <view class="list-right" wx:if="{{index%2==0}}">
-        <view class="inline-block chat-msg box-sizing {{item.type!='video'&&item.type!='img'?'green':''}}">
+        <view class="inline-block chat-msg box-sizing {{item.type=='msg'?color:''}}">
           <view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
           <view wx:if="{{item.type=='audio'}}" style="width:{{item.duration/100}}px" class="chat-msg-voice list-right" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick" data-index="{{index}}">
             <text class="inline-block">{{item.aboutTime}}"</text>
@@ -18,14 +21,17 @@
           <view wx:if="{{item.type=='img'}}" class="list-img">
             <image src="{{item.imgUrl}}" mode="widthFix" bindtap="preImg" data-url="{{item.imgUrl}}"></image>
           </view>
-          <view wx:if="{{item.type!='video'&&item.type!='img'}}" class="inline-block list-trange"></view>
+          <view class="list-map" wx:if="{{item.type=='map'}}">
+            <map longitude="{{item.longitude}}" latitude="{{item.latitude}}" class="map" markers="{{item.markers}}" bindtap="listMapClick"></map>
+          </view>
+          <!-- <view wx:if="{{item.type=='msg'}}" class="inline-block list-trange" ></view> -->
         </view>
 
         <image class="chat-user-img" src="" mode="aspectFit"></image>
       </view>
       <view class="list-left" wx:if="{{index%2!=0}}">
         <image class="chat-user-img" src="" mode="aspectFit"></image>
-        <view class="inline-block chat-msg-left box-sizing {{item.type!='video'&&item.type!='img'?'green':''}}">
+        <view class="inline-block chat-msg-left box-sizing {{item.type=='msg'?color:''}}">
           <view wx:if="{{item.type=='msg'}}">{{item.content}}</view>
           <view wx:if="{{item.type=='audio'}}" class="chat-msg-voice" style="width:{{item.duration/100}}px" data-voicemsg="{{item.voiceMsg}}" bindtap="msgLick">
             <view class="yy-img inline-block">
@@ -36,7 +42,10 @@
           <view wx:if="{{item.type=='img'}}" class="list-img">
             <image src="{{item.imgUrl}}" mode="widthFix" bindtap="preImg" data-url="{{item.imgUrl}}"></image>
           </view>
-          <view wx:if="{{item.type!='video'&&item.type!='img'}}" class="inline-block list-trange-left"></view>
+          <view class="list-map" wx:if="{{item.type=='map'}}">
+            <map longitude="{{item.longitude}}" latitude="{{item.latitude}}" class="map" markers="{{item.markers}}" bindtap="listMapClick"></map>
+          </view>
+          <!-- <view wx:if="{{item.type=='msg'}}" class="inline-block list-trange-left"></view> -->
         </view>
       </view>
     </view>
@@ -46,7 +55,7 @@
       <image bindtap="voiceClick" class="voice-img" src="../img/{{voiceStatus?'key':'voice'}}.png" mode="aspectFit"></image>
       <view wx:if="{{voiceStatus}}" bindtouchstart="record" bindtouchend="recordEnd" class="inline-block voice-view">按住说话</view>
       <input maxlength="1500" wx:if="{{!voiceStatus}}" type='text' bindinput="input" hold-keyboard="true" value="{{inputMsg}}" class="inline-block msg-input" adjust-position="{{inputUp}}" bindfocus="inputFocus" bindblur="inputBlur"></input>
-      <button size="mini" type="primary" class="inline-block input-btn" bindtap="sendMsg">发送</button>
+      <button size="mini" class="inline-block input-btn {{color}}" bindtap="sendMsg">发送</button>
       <image bindtap="addClick" class="voice-img" src="../img/add.png" mode="aspectFit"></image>
     </view>
     <view class="input-enclosure box-sizing" hidden="{{!addStatus}}">
@@ -56,12 +65,11 @@
       </view>
       <view class="inline-block input-enclosure-list" bindtap="psClick">
         <image src="../img/enclosure-ps.png" mode="widthFix"></image>
-
         <view>拍摄</view>
       </view>
-      <view class="inline-block input-enclosure-list">
-        <image src="../img/enclosure-wj.png" mode="widthFix"></image>
-        <view>文件</view>
+      <view class="inline-block input-enclosure-list" bindtap="postionClick">
+        <image src="../img/enclosure-dw.png" mode="widthFix"></image>
+        <view>位置</view>
       </view>
     </view>
   </view>
@@ -89,5 +97,14 @@
   </view>
   <view class="video-pre" wx:if="{{fullPlay}}">
     <video src="{{psVideoUrl}}"></video>
+  </view>
+  <map wx:if="{{map}}" id="map" longitude="{{longitude}}" latitude="{{latitude}}" class="map" markers="{{markers}}" scale="20">
+    <button class="inline-block mab-btn {{color}}" size="mini" bindtap="sendPosition">发送</button>
+  </map>
+  <view class="skin-btn" style="top:{{statusBarHeight*2+130}}rpx">
+    <image class="skin-img" src="../img/skin-{{color}}.png" mode="aspectFit" bindtap="skinClick"></image>
+    <view class="skin-list inline-block" wx:if="{{skin}}">
+      <view wx:for="{{colorList}}" wx:key="index" class="{{item}}" data-color="{{item}}" bindtap="skinChange"></view>
+    </view>
   </view>
 </view>

@@ -7,6 +7,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    navTitle:{
+      type:String,//显示在导航栏的名字
+      value:''
+    },
     wxsUrl: {
       type: String, //websocket地址
       value: ''
@@ -29,6 +33,11 @@ Component({
    * 组件的初始数据
    */
   data: {
+    statusBarHeight:'',//导航栏高度
+    bgColor:'bg_green',
+    color:'green',
+    colorList:['green','red','yellow'],
+    skin:false,
     list: [], //会话内容
     inputMsg: '',
     scrollTop: '',
@@ -45,11 +54,20 @@ Component({
     psVideoUrl:'',//拍摄的视频预览
     psVideoImg:'',//拍摄的视频封面
     fullPlay:false,//是否全屏播放
+    map:false,//是否显示地图
   },
 
   ready: function (options) {
-    console.log(options)
-    console.log('This is a plugin page!');
+    console.log(options);
+    var that=this;
+    wx.getSystemInfo({
+      success(res) {
+        that.setData({
+          statusBarHeight: res.statusBarHeight
+        })
+      }
+    })
+    
     this.setData({
       windowHeight: wx.getSystemInfoSync().windowHeight
     })
@@ -58,6 +76,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    back:function(){
+      var myEventDetail = {"chatIng":false} // detail对象，提供给事件监听函数
+      var myEventOption = { bubbles: true, composed: true } // 触发事件的选项
+      this.triggerEvent('myevent', myEventDetail, myEventOption)
+    },
     //input框输入
     input: function (e) {
       this.setData({
@@ -208,19 +231,9 @@ Component({
 
     //拍摄点击
     psClick: function () {
-     
       this.setData({
         ps: true
       })
-      // const ctx = wx.createCameraContext()
-      // ctx.startRecord({
-      //   timeoutCallback:function(res){
-      //     console.log(res)
-      //   },
-      //   success: (res) => {
-      //     console.log(res)
-      //   }
-      // })
     },
 
     //开始拍摄
@@ -326,6 +339,82 @@ Component({
       wx.previewImage({
         urls: e.currentTarget.dataset.url, // 当前显示图片的http链接
       })
+    },
+
+    //定位点击
+    postionClick:function(e){
+      var that=this;
+      wx.getLocation({
+        type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+        isHighAccuracy:true,
+        success(res) {
+          const latitude = res.latitude
+          const longitude = res.longitude
+          console.log(res)
+          that.setData({
+            map:true,
+            longitude: longitude,
+            latitude: latitude,
+            markers: [{
+              iconPath: "../img/marker.png",
+              id: 0,
+              latitude: latitude,
+              longitude: longitude,
+              width: 50,
+              height: 50
+            }],
+          })
+        }
+      })
+    },
+    //发送位置
+    sendPosition:function(e){
+      var v={
+        type:'map',
+        longitude: this.data.longitude,
+        latitude: this.data.latitude,
+        markers: [{
+          iconPath: "../img/marker.png",
+          id:this.data.list.length+1,
+          latitude: this.data.latitude,
+          longitude: this.data.longitude,
+          width: 20,
+          height: 20
+        }],
+      }
+      this.data.list.push(v)
+      this.setData({
+        map: false,
+        list:this.data.list,
+        addStatus: !this.data.addStatus,
+        inputHeight: 0
+      })
+    },
+
+    //对话的地图点击
+    listMapClick:function(e){
+      var latitude=e.detail.latitude,
+          longitude = e.detail.longitude;
+      wx.openLocation({
+        latitude,
+        longitude,
+        scale: 18
+      })
+    },
+
+    //皮肤按钮点击
+    skinClick:function(){
+      this.setData({
+        skin:true
+      })
+    },
+    //皮肤列表点击
+    skinChange:function(e){
+      this.setData({
+        color:e.currentTarget.dataset.color,
+        bgColor: 'bg_' + e.currentTarget.dataset.color,
+        skin:false
+      })
     }
 
   },
@@ -339,9 +428,6 @@ Component({
           // padding:list[list.length-1].type=='img'?250:30
         })
       }).exec();
-      // that.setData({
-      //   scrollTop: list.length * 3000
-      // })
     }
   },
 })

@@ -1,14 +1,57 @@
 /* components/chatRoom/chatRoom.wxss */
-
+.red{
+  background: #FF0000!important;
+  color:#fff;
+}
+.green{
+  background: #54dc56!important;
+  color:#fff;
+}
+.yellow{
+  background: #FFE500!important;
+  color:#fff;
+}
+.bg_red{
+  background:rgba(255,51,0,0.1)!important;
+}
+.bg_green{
+  background:rgba(84,220,86,0.1)!important;
+}
+.bg_yellow{
+  background:rgba(255,229,0,0.1)!important;
+}
+.skin-btn{
+  position:fixed;
+  top:30rpx;
+  left:30rpx;
+}
+.skin-img{
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: top;
+}
+.skin-list{
+  width: 60rpx;
+  background: #fff;
+  padding:10rpx;
+  border-radius: 8rpx;
+  margin-left: 5rpx;
+}
+.skin-list>view{
+  width:40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.skin-list>view:not(:last-child){
+  margin-bottom: 10rpx
+}
 .inline-block {
   display: inline-block;
 }
 
 .box-sizing {
   box-sizing: border-box;
-}
-.green{
-  background: #54dc56!important;
 }
 .chat-show {
   width: 100%;
@@ -19,7 +62,17 @@
   top: 0;
   left: 0;
 }
-
+.chat-head{
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 30rpx;
+  padding-left:30rpx;
+}
+.chat-head>image{
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: middle;
+}
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -435,4 +488,22 @@
 }
 .list-img>image{
   width:100%;
+}
+.map{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+.mab-btn{
+  width: 150rpx!important;
+  font-size: 28rpx;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  position: absolute;
+  right:30rpx;
+  top:30rpx;
+}
+.list-map>map{
+  width: 400rpx;
+  height: 200rpx;
 }

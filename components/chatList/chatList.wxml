@@ -1,0 +1,17 @@
+<!--components/chatList/chatList.wxml-->
+<view>
+  <view wx:if="{{!chatIng}}">
+    <view class="chat-head" style="margin-top:{{statusBarHeight}}px">
+      <image src="../img/back.png" mode="aspectFit" bindtap="back"></image>
+    </view>
+    <view class="chat-list" bindtap="goRoom" wx:for="{{list}}" wx:key="index" data-name="{{item.userInfo.nickName}}">
+      <image src="{{item.userInfo.avatarUrl}}" mode="aspectFit" class="list-img"></image>
+      <view class="list-right inline-block">
+        <view class="list-name">{{item.userInfo.nickName}}</view>
+        <view class="list-msg">这是一条信息</view>
+      </view>
+      <view class="msg-num">2</view>
+    </view>
+  </view>
+  <chat-room wx:if="{{chatIng}}" bindmyevent="onMyEvent" navTitle="{{navTitle}}"/>
+</view>

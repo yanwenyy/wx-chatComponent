@@ -1,5 +1,7 @@
 {
+  "navigationStyle": "custom",
   "usingComponents": {
-    "chat-room":"../../components/chatRoom/chatRoom"
+    "chat-room":"../../components/chatRoom/chatRoom",
+    "chat-list": "../../components/chatList/chatList"
   }
 }

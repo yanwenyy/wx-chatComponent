@@ -1,0 +1,58 @@
+/* components/chatList/chatList.wxss */
+.inline-block {
+  display: inline-block;
+}
+
+.box-sizing {
+  box-sizing: border-box;
+}
+.chat-head{
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 30rpx;
+  padding-left:30rpx;
+}
+.chat-head>image{
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: middle;
+}
+.chat-list{
+  padding:20rpx 0 0 20rpx;
+  position: relative;
+
+}
+.list-img{
+  width: 80rpx;
+  height: 80rpx;
+  background: #eee;
+  border-radius: 8rpx;
+  vertical-align: top;
+  margin-right: 20rpx;
+}
+.list-right{
+  width: 85%;
+  padding-bottom: 20rpx;
+  border-bottom:1rpx solid #eee;
+}
+.list-name{
+  font-size: 30rpx;
+  line-height: 40rpx;
+}
+.list-msg{
+  font-size: 24rpx;
+  color:#999;
+}
+.msg-num{
+  width: 30rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+  color:#fff;
+  background: red;
+  border-radius: 50%;
+  font-size: 20rpx;
+  position: absolute;
+  top:10rpx;
+  left:85rpx;
+}
